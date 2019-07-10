@@ -3,8 +3,48 @@ defmodule RPN do
   Documentation for RPN.
   """
 
+
+@doc """
+  Process an individual token in the statement.
+
+  """
+  def process_token(token, stack) do
+    case token do
+      "+" ->
+        case stack do
+          [a | [b | rest]] ->
+            [a + b | rest]
+        end
+      "-" ->
+        case stack do
+          [a | [b | rest]] ->
+            [a + b | rest]
+        end
+      "*" ->
+        case stack do
+          [a | [b | rest]] ->
+            [a + b | rest]
+        end
+      "/" ->
+        case stack do
+          [a | [b | rest]] ->
+            [a + b | rest]
+        end
+      "^" ->
+        case stack do
+          [a | [b | rest]] ->
+            [a + b | rest]
+        end
+      other ->
+        case stack do
+          [] -> [String.to_integer(other)]
+          [any] -> [String.to_integer(other) | [any]]
+        end
+    end
+  end
+
   @doc """
-  Calculate an RPN statement.
+  Process a full RPN statement
 
   ## Examples
 
@@ -12,23 +52,23 @@ defmodule RPN do
       4
 
   """
-  def calculate do
-
+  def calculate(input) do
+    List.foldl(input, [], fn l,s -> process_token( l, s) end)
   end
 
-@doc """
-  Process an individual token in the statement.
+   @doc """
+  Take input and return answer
+
+  ## Examples
+
+      iex> RPN.calculate("1 2 3 + -")
+      4
 
   """
-  def process_token(token) do
-    case token do
-      "+" -> ()
-      "-" -> ()
-      "*" -> ()
-      "/" -> ()
-      "^" -> ()
-      other -> ()
-    end
+  def rpn do
+    input = IO.gets("Input your statement to calculate:\n")
+    list = String.split(input)
+    IO.puts(calculate(list))
   end
 
 
