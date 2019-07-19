@@ -5,7 +5,7 @@ defmodule RPN do
 
 
 @doc """
-  Process an individual token in the statement.
+  Processes an individual token in the statement given the current stack.
 
   """
   def process_token(token, stack) do
@@ -18,57 +18,62 @@ defmodule RPN do
       "-" ->
         case stack do
           [a | [b | rest]] ->
-            [a + b | rest]
+            [a - b | rest]
         end
       "*" ->
         case stack do
           [a | [b | rest]] ->
-            [a + b | rest]
+            [a * b | rest]
         end
       "/" ->
         case stack do
           [a | [b | rest]] ->
-            [a + b | rest]
+            [a / b | rest]
         end
       "^" ->
         case stack do
           [a | [b | rest]] ->
-            [a + b | rest]
+            [:math.pow(a,b) | rest]
         end
       other ->
         case stack do
-          [] -> [String.to_integer(other)]
-          [any] -> [String.to_integer(other) | [any]]
+          [] -> [String.to_integer(other) | [] ]
+          any -> [String.to_integer(other) | any ]
         end
     end
   end
 
   @doc """
-  Process a full RPN statement
+  Takes in an RPN expression as a string of tokens separated by spaces and returns the stack that results from it. No error checking is performed currently.
 
   ## Examples
 
       iex> RPN.calculate("1 2 3 + -")
-      4
+      [4]
+      :ok
 
   """
   def calculate(input) do
-    List.foldl(input, [], fn l,s -> process_token( l, s) end)
+    list = String.split(input)
+    List.foldl(list, [], fn l,s -> process_token( l, s) end)
   end
 
    @doc """
-  Take input and return answer
+  Top level command. Takes input from standard IO and prints the result
 
   ## Examples
 
-      iex> RPN.calculate("1 2 3 + -")
+      iex> RPN.rpn
+      Input your statement to calculate:
+      1 2 3 + -
       4
+      :ok
 
   """
   def rpn do
     input = IO.gets("Input your statement to calculate:\n")
-    list = String.split(input)
-    IO.puts(calculate(list))
+    [result] = calculate(input)
+    IO.puts(result )
   end
 
 
