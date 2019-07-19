@@ -22,3 +22,6 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 rpn-*.tar
 
+# Also ignore elixir_ls (part of a VSCode extension
+/.elixir_ls/
+

@@ -1,5 +1,5 @@
 {application,rpn,
-             [{applications,[kernel,stdlib,elixir,logger]},
+             [{applications,[kernel,stdlib,elixir,logger,ex_doc]},
               {description,"rpn"},
               {modules,['Elixir.RPN']},
               {registered,[]},
